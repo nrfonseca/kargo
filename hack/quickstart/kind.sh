@@ -55,10 +55,11 @@ helm install argo-rollouts argo-rollouts \
 
 helm install kargo \
   oci://ghcr.io/akuity/kargo-charts/kargo \
+  --version 0.3.0-rc.3 \
   --namespace kargo \
   --create-namespace \
   --set api.service.type=NodePort \
   --set api.service.nodePort=31444 \
   --set api.adminAccount.password=admin \
   --set api.adminAccount.tokenSigningKey=iwishtowashmyirishwristwatch \
-  --wait --version 0.3.0-rc.3
+  --wait 
