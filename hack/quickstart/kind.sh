@@ -62,3 +62,4 @@ helm install kargo \
   --set api.adminAccount.password=admin \
   --set api.adminAccount.tokenSigningKey=iwishtowashmyirishwristwatch \
   --wait
+  --version 0.3.0-rc.3
