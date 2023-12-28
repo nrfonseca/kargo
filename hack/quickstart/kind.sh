@@ -61,5 +61,4 @@ helm install kargo \
   --set api.service.nodePort=31444 \
   --set api.adminAccount.password=admin \
   --set api.adminAccount.tokenSigningKey=iwishtowashmyirishwristwatch \
-  --wait
-  --version 0.3.0-rc.3
+  --wait --version 0.3.0-rc.3
