@@ -10,6 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 resources:
+  
   containers:
   - container: base_image
     type: ACR
@@ -21,12 +22,15 @@ resources:
       enabled: true
       tags:
         include:
-        - $(ContainerDotNetVersion)
+        - "6.0"
+
+
+          
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: echo |
+- script:
     echo $(resources.container.base_image.type)
     echo $(resources.container.base_image.registry)
     echo $(resources.container.base_image.repository)
