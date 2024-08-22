@@ -32,7 +32,6 @@ steps:
     script: |
       # Look for $(resources.container) vars that indicate trigger is set in the pipeline
       Write-Output "Checking for base image update trigger..."
-      $trigger_tag = "$(resources.containers.base_image.tag)"
       $trigger_tag = "$(resources.container.base_image.tag)"
       $trigger_type = "$(resources.container.base_image.type)"
 
