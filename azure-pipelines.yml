@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+resources:
+  containers:
+  - container: base_image
+    type: ACR
+    azureSubscription: Azure SDLC
+    resourceGroup: SdlcPlatformCore
+    registry: EdenCore
+    repository: dotnet_aspnet
+    trigger:
+      enabled: true
+      tags:
+        include:
+        - $(ContainerDotNetVersion)
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- task: PowerShell@2
+  displayName: Check Base Image Updates
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  continueOnError: false
+  inputs:
+    targetType: 'inline'
+    workingDirectory: ${{ parameters.workingDir }}
+    errorActionPreference: 'continue'
+    script: |
+      # Look for $(resources.container) vars that indicate trigger is set in the pipeline
+      Write-Output "Checking for base image update trigger..."
+      $trigger_tag = "$(resources.containers.base_image.tag)"
+      $trigger_tag = "$(resources.container.base_image.tag)"
+      $trigger_type = "$(resources.container.base_image.type)"
+
+      if (-not [string]::IsNullOrEmpty($trigger_tag) -and -not [string]::IsNullOrEmpty($trigger_type)) {
+        Write-host "Base image trigger set ✅"
+      } else {
+        Write-host "##vso[task.logissue type=error] Base image trigger not set! Services will be automatically rebuilt and deployed on these container updates."
+        Write-host "Make sure the container resources block is set in your pipeline with the name set to 'base_image'"
+        Write-host "Follow https://outsystemsrd.atlassian.net/wiki/spaces/RRE/pages/3750363455/Architecture+of+Base+Images#Base-container-trigger"
+        exit 1
+      }
