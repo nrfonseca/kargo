@@ -30,21 +30,14 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script:
-    echo $(resources.container.base_image.type)
-    echo $(resources.container.base_image.registry)
-    echo $(resources.container.base_image.repository)
-    echo $(resources.container.base_image.tag)
-    echo $(resources.container.base_image.digest)
-    echo $(resources.container.base_image.URI)
-    echo $(resources.container.base_image.location)
+
 - task: PowerShell@2
   inputs:
     targetType: 'inline'
     script: |
       # Look for $(resources.container) vars that indicate trigger is set in the pipeline
       Write-Output "Checking for base image update trigger..."
-      $trigger_tag = "$(resources.container.base_image.tag)"
+      $trigger_tag = "$(resources.container.base_image.tags)"
       $trigger_type = "$(resources.container.base_image.type)"
 
       if (-not [string]::IsNullOrEmpty($trigger_tag) -and -not [string]::IsNullOrEmpty($trigger_type)) {
