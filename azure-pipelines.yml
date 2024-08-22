@@ -27,13 +27,8 @@ steps:
   displayName: 'Run a one-line script'
 
 - task: PowerShell@2
-  displayName: Check Base Image Updates
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
-  continueOnError: false
   inputs:
     targetType: 'inline'
-    workingDirectory: ${{ parameters.workingDir }}
-    errorActionPreference: 'continue'
     script: |
       # Look for $(resources.container) vars that indicate trigger is set in the pipeline
       Write-Output "Checking for base image update trigger..."
